@@ -7,7 +7,10 @@
     - name: Collect only facts returned by facts
       ansible.builtin.setup:
         gather_subset:
-        - 'all'
+        #- 'all'
+        - 'ansible_system'
+        - 'ansible_machine'
+        - 'ansible_architecture'
       register: setup
 
     - ansible.builtin.debug:
