@@ -1,9 +1,10 @@
 ---
 - name: Capture Server Facts
   hosts: localhost
+  gather_facts: False
 
   tasks:
-    - name: Collect only facts returned by facter
+    - name: Collect only facts returned by facts
       ansible.builtin.setup:
         gather_subset:
         - 'all'
@@ -11,3 +12,4 @@
 
     - ansible.builtin.debug:
         var: setup
+
