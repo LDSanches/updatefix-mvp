@@ -1,6 +1,5 @@
 ---
 - name: Capture Server Facts
-  hosts: localhost
   gather_facts: no
 
   tasks:
