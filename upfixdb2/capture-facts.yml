@@ -2,6 +2,7 @@
 - name: Collect facts from all hosts
   hosts: all
   gather_facts: yes
+
   tasks:
     - name: Display collected facts
       debug:
