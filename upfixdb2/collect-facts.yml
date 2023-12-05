@@ -8,9 +8,9 @@
       ansible.builtin.setup:
         gather_subset:
         #- 'all'
-        - 'ansible_system'
-        - 'ansible_machine'
-        - 'ansible_architecture'
+        - '*system'
+        - '*machine'
+        - '*architecture'
       register: setup
 
     - ansible.builtin.debug:
