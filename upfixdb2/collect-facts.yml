@@ -1,10 +1,10 @@
 ---
-- name: Collect Facts from all Hosts
+- name: Collecting facts from all nodes
   hosts: all
   gather_facts: False
 
   tasks:
-    - name: Collect only facts returned by facts
+    - name: Collecting only facts returned by facts
       ansible.builtin.setup:
         #gather_subset:
         #- 'all'
