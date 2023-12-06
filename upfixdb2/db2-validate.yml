@@ -1,14 +1,14 @@
 ---
 - name: Validate DB2 database instances
-  hosts: all
-  become: yes
+  hosts: "{{ servers_group }}"
+  become: "{{ os_username }}"
   vars_files:
     - vars/vars.yml
 
   tasks:
-    - name: Validate DB2 database with instace user
+    - name: Validate DB2 database with {{ os_username }} user
       command: 
-        - su - db2sec
+        - su - {{ os_username }}
         - db2 list db directory
         - db2 connect to {{ db2_db_name }} user {{ db_co_user }}
       register: db2_db_check_instance
@@ -16,16 +16,4 @@
 
     - name: Display validation result
       debug:
-        msg: "DB2 database instance user {{ 'succeeded' if db2_db_check_instance.rc == 0 else 'failed' }}"
-
-    - name: Validate DB2 database with Atlante user
-      command:
-        - su - atlante
-        - db2 list db directory
-        - db2 connect to {{ db2_db_name }} user {{ db_co_user }}
-      register: db2_db_check_atlante
-      ignore_errors: true
-
-    - name: Display validation result
-      debug:
-        msg: "DB2 database Atlante user {{ 'succeeded' if db2_db_check_atlante.rc == 0 else 'failed' }}"
+        msg: "DB2 database with {{ os_username }} user {{ 'succeeded' if db2_db_check_instance.rc == 0 else 'failed' }}"
