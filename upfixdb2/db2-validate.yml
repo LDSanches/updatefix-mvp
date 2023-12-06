@@ -29,4 +29,3 @@
     - name: Display validation result
       debug:
         msg: "DB2 database Atlante user {{ 'succeeded' if db2_db_check_atlante.rc == 0 else 'failed' }}"
-

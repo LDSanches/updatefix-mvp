@@ -1,7 +1,6 @@
 ---
 - name: DB2 Instance Update Fix
   hosts: all
-  gather_facts: False
   become: yes
   vars_files:
     - vars/vars.yml
