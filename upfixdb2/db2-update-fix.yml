@@ -14,14 +14,14 @@
       register: temp_dir
 
     # Copy and umcompress DB2 Fix tar.gz file
-    - name: Copy tar.gz file from a Remote Source to {{ machine_type }} and {{ os_sytem_type }} host
-      ansible.builtin.copy:
-        src: "{{ db2_source_path }}/{{ db2_fix_file }}"
-        dest: "{{ temp_dir.path }}/{{ db2_fix_file }}"
-        remote_src: yes
-        mode: '0644'
-      when: ansible_machine == "{{ machine_type }}" and
-            ansible_system == "{{ os_sytem_type }}"
+    #- name: Copy tar.gz file from a Remote Source to {{ machine_type }} and {{ os_sytem_type }} host
+    # ansible.builtin.copy:
+    #   src: "{{ db2_source_path }}/{{ db2_fix_file }}"
+    #   dest: "{{ temp_dir.path }}/{{ db2_fix_file }}"
+    #   remote_src: yes
+    #   mode: '0644'
+    # when: ansible_machine == "{{ machine_type }}" and
+    #       ansible_system == "{{ os_sytem_type }}"
   
     - name: Uncompress tar.gz file of {{ machine_type }} and {{ os_sytem_type }}
       ansible.builtin.unarchive:
@@ -40,6 +40,6 @@
     # Remove the temporary directory
     - name: Remove the temporary directory
       ansible.builtin.file:
-        path: "{{ hostvars['temp_dir'].path }}"
+        path: "{{ temp_dir.path }}"
         state: absent
-      when: hostvars['temp_dir'].path is defined
+      when: {{ temp_dir.path }} is defined
