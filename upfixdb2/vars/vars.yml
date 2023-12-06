@@ -2,6 +2,7 @@
 # Vars for DB2 Fix:
 machine_type: "x86_64" #ppc64le and aix64
 os_sytem_type: "Linux" #Linux and AIX
+db2_source_node: "ip-172-31-94-213.ec2.internal"
 db2_source_path: "/midias/db/vulnerabilidade/db2_11.5"
 #db2_fix_aix64_file: "special_29133_v11.5.8_aix64_universal_fixpack.tar.gz"
 #db2_fix_ppc64le_file: "special_29133_v11.5.8_linuxppc64le_universal_fixpack.tar.gz"
