@@ -1,0 +1,60 @@
+---
+- name: Play que aplica o Rollback do patch no jboss
+  hosts: "{{ servers_group }}"
+  become: True
+  become_user: "atlante"
+  gather_facts: True
+  vars:
+    jboss_dir: "/opt/rh/jboss/jboss-eap-7.4"
+  tasks:
+    - name: Captura o nome do host
+      ansible.builtin.shell:
+        cmd: "{{ jboss_dir }}/bin/jboss-cli.sh --connect --command=':read-attribute(name=local-host-name)'"
+      register: saida_read_attribute
+ 
+    - name: Define o fact host
+      ansible.builtin.set_fact:
+        host: "{{ ((saida_read_attribute.stdout_lines)[2] | split())[2] | replace('\"', '') }}"
+ 
+    - name: Capiturando o Patch ID
+      ansible.builtin.shell: "{{ jboss_dir }}/bin/jboss-cli.sh --connect --command='patch info --host={{ host }}'"
+      register: cumulative_patch_id_result
+      args:
+        executable: /bin/bash
+ 
+    - name: Configurando a variavel patch_id em tempo de execucao
+      ansible.builtin.set_fact:
+        patch_id: "{{ (cumulative_patch_id_result.stdout | trim | split())[5] }}"
+ 
+    - name: Aplicar Rollback do patch no JBoss EAP
+      ansible.builtin.shell: "{{ jboss_dir }}/bin/jboss-cli.sh --command='patch rollback --patch-id={{ patch_id }} --reset-configuration=TRUE'"
+ 
+    - name: Pausa de 3 segundos
+      ansible.builtin.pause:
+        seconds: 3
+ 
+    - name: Stop dos Processos do JBoss
+      ansible.builtin.shell:
+        cmd: "{{ jboss_dir }}/bin/jboss-cli.sh --connect --command='shutdown --host={{ host }}'"
+ 
+    - name: Verifica se o jboss está no ar
+      ansible.builtin.shell:
+        cmd: "ps -ef | grep -v grep | grep -i 'jboss' | wc -l"
+      register: resultado
+      until: resultado.stdout | int == 0
+      delay: 3
+      retries: 1000
+ 
+    - name: Pausa de 3 segundos
+      ansible.builtin.pause:
+        seconds: 3
+ 
+    - name: Start do JBoss master
+      ansible.builtin.shell:
+        cmd: "nohup {{ jboss_dir }}/bin/domain.sh -P {{ jboss_dir }}/domain/configuration/domain.properties --host-config=host-master.xml -bmanagement 0.0.0.0 & 2> /dev/null"
+      when: "'MASTER' in servers_group"
+ 
+    - name: Start do JBoss slave
+      ansible.builtin.shell:
+        cmd: "nohup {{ jboss_dir }}/bin/domain.sh -P {{ jboss_dir }}/domain/configuration/domain.properties --host-config=host-slave.xml -bmanagement 0.0.0.0 & 2> /dev/null"
+      when: "'SLAVE' in servers_group"
