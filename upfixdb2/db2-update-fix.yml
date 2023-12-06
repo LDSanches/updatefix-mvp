@@ -20,7 +20,7 @@
         src: "{{ db2_source_path }}/{{ db2_fix_file }}"
         dest: "{{ db2_source_path }}/{{ db2_fix_file }}"
         flat: yes
-      when: inventory_hostname == "{{ db2_source_node }}"
+      #when: inventory_hostname == "{{ db2_source_node }}"
 
     - name: Copy tar.gz file from a Remote Source to {{ machine_type }} and {{ os_sytem_type }} host
       ansible.builtin.copy:
