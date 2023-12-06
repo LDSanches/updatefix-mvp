@@ -8,7 +8,6 @@
   tasks:
     - name: Validate DB2 database with {{ os_username }} user
       command: 
-        - su - {{ os_username }}
         - db2 list db directory
         - db2 connect to {{ db2_db_name }} user {{ db_co_user }}
       register: db2_db_check_instance
