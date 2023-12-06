@@ -2,7 +2,7 @@
 - name: Play que aplica o Rollback do patch no jboss
   hosts: "{{ servers_group }}"
   become: True
-  become_user: "atlante"
+  become_user: "{{ username }}"
   gather_facts: True
   vars:
     jboss_dir: "/opt/rh/jboss/jboss-eap-7.4"

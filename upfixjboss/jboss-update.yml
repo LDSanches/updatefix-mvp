@@ -2,10 +2,10 @@
 - name: Play que aplica patch no jboss
   hosts: "{{ servers_group }}"
   become: True
-  become_user: "atlante"
+  become_user: "{{ username }}"
   gather_facts: True
   vars:
-    jboss_user: "atlante"
+    jboss_user: "{{ username }}"
     jboss_dir: "/opt/rh/jboss/jboss-eap-7.4"
     arquivo_patch: "jboss-eap-7.4.11-patch.zip"
     restart_after_patch: True
