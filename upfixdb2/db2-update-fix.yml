@@ -13,31 +13,26 @@
         suffix: unique_suffix
       register: temp_dir
 
-    # Copy DB2 Fix tar.gz file
-    - name: Copy and uncompress tar.gz file from Source host to AIX host
-      ansible.builtin.unarchive:
-        src: "{{ db2_source_path }}/{{ db2_fix_aix_file }}"
+    # Copy and umcompress DB2 Fix tar.gz file
+    - name: Copy tar.gz file from a Remote Source to "{{ machine_type }}"" and "{{ os_sytem_type }}" host
+      ansible.builtin.copy:
+        src: "{{ temp_dir.path }}/{{ db2_fix_file }}"
         dest: "{{ temp_dir.path }}"
-      when: ansible_system == 'AIX' 
-
-    - name: Copy and uncompress tar.gz file from Source host to PPC64LE host
+        mode: '0644'
+      when: ansible_machine == "{{ machine_type }}" and
+            ansible_system == "{{ os_sytem_type }}"
+      
+    - name: Uncompress tar.gz file of "{{ machine_type }}" and "{{ os_sytem_type }}"
       ansible.builtin.unarchive:
-        src: "{{ db2_source_path }}/{{ db2_fix_ppc64le_file }}"
+        src: "{{ temp_dir.path }}/{{ db2_fix_file }}"
         dest: "{{ temp_dir.path }}"
-      when: ansible_machine == "ppc64le" and 
-            ansible_system == "Linux"
-
-    - name: Copy and uncompress tar.gz file from Source host to Linux host
-      ansible.builtin.unarchive:
-        src: "{{ db2_source_path }}/{{ db2_fix_linux_file }}"
-        dest: "{{ temp_dir.path }}"
-      when: ansible_machine == "x86_64" and
-            ansible_system == "Linux"
+      when: ansible_machine == "{{ machine_type }}" and
+            ansible_system == "{{ os_sytem_type }}"
 
     # DB2 Instanace Update
     - name: DB2 Instanace Update
       ansible.builtin.shell:
-        cmd: "./db2_install -b /opt/IBM/db2/V11.5_SB29133 -p CLIENT -f NOTSAMP"
+        cmd: "./db2_install -b {{ db2_path }} -p CLIENT -f NOTSAMP"
         chdir: "{{ temp_dir.path }}/temporal"
 
     # Remove the temporary directory
