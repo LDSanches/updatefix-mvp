@@ -18,6 +18,7 @@
       ansible.builtin.copy:
         src: "{{ db2_source_path }}/{{ db2_fix_file }}"
         dest: "{{ temp_dir.path }}/{{ db2_fix_file }}"
+        remote_src: yes
         mode: '0644'
       when: ansible_machine == "{{ machine_type }}" and
             ansible_system == "{{ os_sytem_type }}"
