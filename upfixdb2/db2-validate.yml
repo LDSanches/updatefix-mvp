@@ -1,6 +1,6 @@
 ---
 - name: Validate DB2 database instances
-  hosts: all
+  hosts: "{{ servers_group }}"
   become: "{{ os_username }}"
   vars_files:
     - vars/vars.yml

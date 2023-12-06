@@ -1,12 +1,12 @@
 ---
 - name: DB2 Instance Update Fix
-  hosts: all
+  hosts: "{{ servers_group }}"
   become: yes
   vars_files:
     - vars/vars.yml
 
   tasks:
-    # Create the temporary directory
+    # Create a temporary directory
     - name: Create the temporary directory
       ansible.builtin.tempfile:
         state: directory
@@ -40,9 +40,9 @@
         cmd: "./db2_install -b /opt/IBM/db2/V11.5_SB29133 -p CLIENT -f NOTSAMP"
         chdir: "{{ temp_dir.path }}/temporal"
 
-   # Remove the temporary directory
-   - name: Remove Temporary Directory
-     ansible.builtin.file:
-       path: "{{ hostvars['temp_dir'].path }}"
-       state: absent
-     when: hostvars['temp_dir'].path is defined
+    # Remove the temporary directory
+    - name: Remove the temporary directory
+      ansible.builtin.file:
+        path: "{{ hostvars['temp_dir'].path }}"
+        state: absent
+      when: hostvars['temp_dir'].path is defined
