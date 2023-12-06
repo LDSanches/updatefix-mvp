@@ -21,7 +21,7 @@
         remote_src: yes
         mode: '0644'
       when: ansible_machine == "{{ machine_type }}" and
-           ansible_system == "{{ os_sytem_type }}"
+            ansible_system == "{{ os_sytem_type }}"
   
     - name: Uncompress tar.gz file of {{ machine_type }} and {{ os_sytem_type }}
       ansible.builtin.unarchive:
