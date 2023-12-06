@@ -1,11 +1,10 @@
 ---
-# Vars for DB2 Fix
+# Vars for DB2 Fix:
 db2_source_path: "/midias/db/vulnerabilidade/db2_11.5"
 db2_fix_aix_file: "special_29133_v11.5.8_aix64_universal_fixpack.tar.gz"
 db2_fix_ppc64le_file: "special_29133_v11.5.8_linuxppc64le_universal_fixpack.tar.gz"
 db2_fix_linux_file: "special_29133_v11.5.8_aix64_universal_fixpack.tar.gz"
 
-# Vars for Validate DB2
+# Vars for DB2 Validate:
 db2_db_name: "db2_db_name"
 db_co_user: "co-db-xx"
- 
