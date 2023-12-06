@@ -27,6 +27,7 @@
       ansible.builtin.unarchive:
         src: "{{ temp_dir.path }}/{{ db2_fix_file }}"
         dest: "{{ temp_dir.path }}"
+        remote_src: no
       when: ansible_machine == "{{ machine_type }}" and
             ansible_system == "{{ os_sytem_type }}"
 
