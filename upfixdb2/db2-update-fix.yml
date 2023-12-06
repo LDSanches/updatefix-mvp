@@ -34,7 +34,7 @@
         src: "{{ db2_source_path }}/{{ db2_fix_linux_file }}"
         dest: "{{ temp_dir.path }}"
         remote_src: yes
-      when: ansible_system == "x86_64" and
+      when: ansible_machine == "x86_64" and
             ansible_system == "Linux"
 
     # DB2 Instanace Update
