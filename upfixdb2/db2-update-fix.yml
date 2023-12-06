@@ -25,8 +25,9 @@
   
     - name: Uncompress tar.gz file of {{ machine_type }} and {{ os_sytem_type }}
       ansible.builtin.unarchive:
-        src: "{{ temp_dir.path }}/{{ db2_fix_file }}"
+        src: "{{ db2_source_path }}/{{ db2_fix_file }}"
         dest: "{{ temp_dir.path }}"
+        remote_src: yes
       when: ansible_machine == "{{ machine_type }}" and
             ansible_system == "{{ os_sytem_type }}"
 
