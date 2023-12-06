@@ -6,8 +6,8 @@
     - vars/vars.yml
 
   tasks:
-    # Download the tar.gz file into a temporary directory
-    - name: Create temporary directory
+    # Create the temporary directory
+    - name: Create the temporary directory
       ansible.builtin.tempfile:
         state: directory
         suffix: unique_suffix
@@ -18,14 +18,12 @@
       ansible.builtin.unarchive:
         src: "{{ db2_source_path }}/{{ db2_fix_aix_file }}"
         dest: "{{ temp_dir.path }}"
-        remote_src: yes
       when: ansible_system == 'AIX' 
 
     - name: Copy and uncompress tar.gz file from Source host to PPC64LE host
       ansible.builtin.unarchive:
         src: "{{ db2_source_path }}/{{ db2_fix_ppc64le_file }}"
         dest: "{{ temp_dir.path }}"
-        remote_src: yes
       when: ansible_machine == "ppc64le" and 
             ansible_system == "Linux"
 
@@ -33,7 +31,6 @@
       ansible.builtin.unarchive:
         src: "{{ db2_source_path }}/{{ db2_fix_linux_file }}"
         dest: "{{ temp_dir.path }}"
-        remote_src: yes
       when: ansible_machine == "x86_64" and
             ansible_system == "Linux"
 
@@ -42,3 +39,10 @@
       ansible.builtin.shell:
         cmd: "./db2_install -b /opt/IBM/db2/V11.5_SB29133 -p CLIENT -f NOTSAMP"
         chdir: "{{ temp_dir.path }}/temporal"
+
+   # Remove the temporary directory
+   - name: Remove Temporary Directory
+     ansible.builtin.file:
+       path: "{{ hostvars['temp_dir'].path }}"
+       state: absent
+     when: hostvars['temp_dir'].path is defined
