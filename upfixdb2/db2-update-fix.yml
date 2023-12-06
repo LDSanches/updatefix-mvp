@@ -13,7 +13,7 @@
         suffix: unique_suffix
       register: temp_dir
 
-    # Copy and umcompress DB2 Fix tar.gz file
+    # Copy and uncompress DB2 Fix tar.gz file
     - name: Copy tar.gz file from a Remote Source to {{ machine_type }} and {{ os_sytem_type }} host
       ansible.builtin.copy:
         src: "{{ db2_source_path }}/{{ db2_fix_file }}"
