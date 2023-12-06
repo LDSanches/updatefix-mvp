@@ -15,12 +15,12 @@
 
     # Copy and umcompress DB2 Fix tar.gz file
     - name: Copy tar.gz file from a Remote Source to {{ machine_type }} and {{ os_sytem_type }} host
-     ansible.builtin.copy:
-       src: "{{ db2_source_path }}/{{ db2_fix_file }}"
-       dest: "{{ temp_dir.path }}/{{ db2_fix_file }}"
-       remote_src: yes
-       mode: '0644'
-     when: ansible_machine == "{{ machine_type }}" and
+      ansible.builtin.copy:
+        src: "{{ db2_source_path }}/{{ db2_fix_file }}"
+        dest: "{{ temp_dir.path }}/{{ db2_fix_file }}"
+        remote_src: yes
+        mode: '0644'
+      when: ansible_machine == "{{ machine_type }}" and
            ansible_system == "{{ os_sytem_type }}"
   
     - name: Uncompress tar.gz file of {{ machine_type }} and {{ os_sytem_type }}
