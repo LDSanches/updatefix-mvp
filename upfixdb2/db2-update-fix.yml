@@ -1,0 +1,46 @@
+---
+- name: DB2 Instance Update Fix
+  hosts: localhost
+  gather_facts: False
+  become: yes
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    # Download the tar.gz file into a temporary directory
+    - name: Create temporary directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: unique_suffix
+      register: temp_dir
+
+    # Copy DB2 Fix tar.gz file
+    - name: Copy DB2 Fix tar.gz file
+      ansible.builtin.unarchive:
+        src: "{{ db2_source_path }}/{{ db2_fix_aix_file }}"
+        dest: "{{ temp_dir.path }}"
+      when: ansible_system == 'AIX' 
+
+    - name: Copy and uncompress tar.gz file from Source host to AIX host
+      ansible.builtin.unarchive:
+        src: "{{ db2_source_path }}/{{ db2_fix_ppc64le_file }}"
+        dest: "{{ temp_dir.path }}"
+      when: ansible_machine == "ppc64le" and 
+            ansible_system == "Linux"
+
+    - name: Copy and uncompress tar.gz file from Source host to Linux host
+      ansible.builtin.unarchive:
+        src: "{{ db2_source_path }}/{{ db2_fix_aix_file }}"
+        dest: "{{ temp_dir.path }}"
+      when: ansible_system == "x86_64" and
+            ansible_system == "Linux"
+
+    # DB2 Instanace Update
+    - name: DB2 Instanace Update
+      ansible.builtin.shell:
+        cmd: "./db2_install -b /opt/IBM/db2/V11.5_SB29133 -p CLIENT -f NOTSAMP"
+        chdir: "{{ temp_dir.path }}/temporal"
+
+
+   
+
