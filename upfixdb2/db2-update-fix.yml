@@ -15,13 +15,13 @@
       register: temp_dir
 
     # Copy DB2 Fix tar.gz file
-    - name: Copy DB2 Fix tar.gz file
+    - name: Copy and uncompress tar.gz file from Source host to AIX host
       ansible.builtin.unarchive:
         src: "{{ db2_source_path }}/{{ db2_fix_aix_file }}"
         dest: "{{ temp_dir.path }}"
       when: ansible_system == 'AIX' 
 
-    - name: Copy and uncompress tar.gz file from Source host to AIX host
+    - name: Copy and uncompress tar.gz file from Source host to PPC64LE host
       ansible.builtin.unarchive:
         src: "{{ db2_source_path }}/{{ db2_fix_ppc64le_file }}"
         dest: "{{ temp_dir.path }}"
