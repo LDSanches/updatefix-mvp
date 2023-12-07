@@ -31,10 +31,10 @@
             ansible_system == "{{ os_sytem_type }}"
 
     # DB2 Instanace Update
-    #- name: DB2 Instanace Update
-    #  ansible.builtin.shell:
-    #    cmd: "./db2_install -b {{ db2_path }} -p CLIENT -f NOTSAMP"
-    #    chdir: "{{ temp_dir.path }}/temporal"
+    - name: DB2 Instanace Update
+      ansible.builtin.shell:
+        cmd: "./db2_install -b {{ db2_path }} -p CLIENT -f NOTSAMP"
+        chdir: "{{ temp_dir.path }}/temporal"
 
     # Remove the temporary directory
     - name: Remove the temporary directory
