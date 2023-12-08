@@ -33,7 +33,7 @@
     # DB2 Instanace Update
     - name: DB2 Instanace Update
       ansible.builtin.shell:
-        cmd: "./db2_install -b {{ db2_path }} -p CLIENT -f NOTSAMP"
+        cmd: "./db2_install -b {{ db2_db_path }} -p CLIENT -f NOTSAMP"
         chdir: "{{ temp_dir.path }}/temporal"
 
     # Remove the temporary directory

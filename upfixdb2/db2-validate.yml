@@ -6,15 +6,13 @@
     - vars/vars.yml
 
   tasks:
-    - name: List DB2 directory with {{ os_username }} user
-      command: 
-        - db2 list db directory | grep "Database name" | awk -F" " '{ print $4 }'
+    - name: List DB2 DB directory with {{ os_username }} user
+      command: "db2 list db directory | grep 'Database name' | awk -F' ' '{ print $4 }'"
       register: db2_db_name
       ignore_errors: true
 
     - name: Validate DB2 database {{ db2_db_name }} accees with {{ db_co_user }} and {{ os_username }} users
-      command:
-        - db2 connect to {{ db2_db_name }} user {{ db_co_user }} using {{ db_co_password }}
+      command: "db2 connect to {{ db2_db_name }} user {{ db_co_user }} using {{ db_co_password }}"
       register: db2_db_check_instance
       ignore_errors: true
 
