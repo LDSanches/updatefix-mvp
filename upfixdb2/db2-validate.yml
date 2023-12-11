@@ -7,15 +7,15 @@
 
   tasks:
     - name: List DB2 DB directory with {{ os_username }} user
-      shell: "db2 list db directory | grep 'Database name' | awk -F' ' '{ print $4 }'"
+      ansible.builtin.shell: "db2 list db directory | grep 'Database name' | awk -F' ' '{ print $4 }'"
       register: db2_db_name
       ignore_errors: true
 
     - name: Validate DB2 database {{ db2_db_name }} accees with {{ db_co_user }} and {{ os_username }} users
-      shell: "db2 connect to {{ db2_db_name }} user {{ db_co_user }} using {{ db_co_password }}"
+      ansible.builtin.shell: "db2 connect to {{ db2_db_name }} user {{ db_co_user }} using {{ db_co_password }}"
       register: db2_db_check_instance
       ignore_errors: true
 
     - name: Display validation result
-      debug:
-        msg: "DB2 database with {{ os_username }} user {{ 'succeeded' if db2_db_check_instance.rc == 0 else 'failed' }}"
+      ansible.builtin.debug:
+        ansible.builtin.msg: "DB2 database with {{ os_username }} user {{ 'succeeded' if db2_db_check_instance.rc == 0 else 'failed' }}"
