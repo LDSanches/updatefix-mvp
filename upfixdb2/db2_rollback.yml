@@ -58,6 +58,4 @@
 
     - name: Display validation result
       debug: 
-        msg: "DB2 database Catalog {{ os_username }} user {{ db2_instance_catalog }}"
-
-
+        msg: "{{ db2_instance_catalog }}"
