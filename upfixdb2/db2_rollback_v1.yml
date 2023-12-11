@@ -11,12 +11,11 @@
       command: 
         - db2 list node directory | grep 'Node name' | awk -F' ' '{ print $4 }'
         - db2 list db directory | grep 'Database name' | awk -F' ' '{ print $4 }'
-        - db2 list node directory | grep 'Hostname' | awk -F' ' '{ print $3}'
-        - db2 list node directory | grep 'Service name' | awk -F' ' '{ print $4}'
+        - db2 list node directory | grep 'Hostname' | awk -F' ' '{ print $3 }'
+        - db2 list node directory | grep 'Service name' | awk -F' ' '{ print $4 }'
         - db2level | grep 'Product is installed at' | awk '{ print $5 }' | awk -F'"' '{ print $2 }'
       register: db2_db_inform
       ignore_errors: true
-
 
     # DB2 Drop OLD Instance
     - name: Drop DB2 New instance with ROOT user
@@ -42,4 +41,5 @@
       ignore_errors: true
 
     - name: Display validation result
-      debug: "{{ db2_instance_catalog }}"
+      debug: 
+        var: db2_instance_catalog

@@ -8,27 +8,27 @@
   tasks:
     # DB2 Database Information for the Rollback process
     - name: Get DB2 Node-Name directory with {{ os_username }} user
-      command: "db2 list node directory | grep 'Node name' | awk -F' ' '{ print $4 }'"
+      shell: "db2 list node directory | grep 'Node name' | awk -F' ' '{ print $4 }'"
       register: db2_db_node
       ignore_errors: true
 
     - name: Get DB2 DB-Name directory with {{ os_username }} user
-      command: "db2 list db directory | grep 'Database name' | awk -F' ' '{ print $4 }'"
+      shell: "db2 list db directory | grep 'Database name' | awk -F' ' '{ print $4 }'"
       register: db2_db_name
       ignore_errors: true
 
     - name: Get DB2 DB-Hostname directory with {{ os_username }} user
-      command: "db2 list node directory | grep 'Hostname' | awk -F' ' '{ print $3}'"
+      shell: "db2 list node directory | grep 'Hostname' | awk -F' ' '{ print $3}'"
       register: db2_db_hostname
       ignore_errors: true
 
     - name: Get DB2 DB-Service Name directory with {{ os_username }} user
-      command: "db2 list node directory | grep 'Service name' | awk -F' ' '{ print $4}'"
+      shell: "db2 list node directory | grep 'Service name' | awk -F' ' '{ print $4}'"
       register: db2_db_svcname
       ignore_errors: true
 
     - name: Get DB2 local path installation:
-      command:
+      shell:
         - db2level | grep 'Product is installed at' | awk '{ print $5 }' | awk -F'"' '{ print $2 }'
       register: db2_db_newpath
       ignore_errors: true
@@ -36,26 +36,30 @@
     # DB2 Drop OLD Instance
     - name: Drop DB2 New instance with ROOT user
       become: True
-      command: "{{ db2_db_newpath }}/instance/db2idrop db2sec"
+      shell: "{{ db2_db_newpath }}/instance/db2idrop db2sec"
       register: db2_db_drop
       ignore_errors: true
 
     # DB2 Create Instance into the Old Directory
     - name: Create DB2 OLD instance with ROOT user
       become: True
-      command: "{{ db2_db_path }}/instance/db2icrt -u db2sec db2sec"
+      shell: "{{ db2_db_path }}/instance/db2icrt -u db2sec db2sec"
       register: db2_db_create
       ignore_errors: true
 
     # DB2 Instance Catalog
     - name: Catalog DB2 Instance Node and DB
       become: "{{ os_username }}"
-      command:
-        - db2 catalog tcpip node {{ db2_db_nod }} remote {{ db2_db_hostname }} server {{ db2_db_svcname }}
-        - db2 catalog database {{ db2_db_name }} at node {{ db2_db_nod }}
-      register: db2_instance_catalog
+      shell: "db2 catalog tcpip node {{ db2_db_nod.stdout }} remote {{ db2_db_hostname.stdout }} server {{ db2_db_svcname.stdout }}"
+      register: db2_instance_catalog_node
       ignore_errors: true
+    - debug: 
+        msg: "{{ db2_instance_catalog_node }}"
 
-    - name: Display validation result
-      debug: 
-        msg: "{{ db2_instance_catalog }}"
+    - name: Catalog DB2 Instance Node and DB
+      become: "{{ os_username }}"
+      shell: "db2 catalog database {{ db2_db_name.stdout }} at node {{ db2_db_nod.stdout }}"
+      register: db2_instance_catalog_db
+      ignore_errors: true
+    - debug: 
+        msg: "{{ db2_instance_catalog_db }}"
