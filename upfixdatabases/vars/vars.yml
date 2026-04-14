@@ -1,0 +1,7 @@
+---
+# Estas variáveis virão do RHDH como extra_vars
+requisicao: "REQ001"
+ambiente: "D"
+nome_cliente: "CLIENTE_PADRAO"
+nome_sistema: "SISTEMA_BASE"
+sufixo: "OPCIONAL"
