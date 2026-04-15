@@ -3,6 +3,8 @@
   hosts: all
   gather_facts: false
   become: yes
+  collections:
+    - community.general
   
   vars_files:
     - vars/vars.yml
@@ -13,7 +15,7 @@
         msg: "Chamando Stored Procedure para criação do banco para o cliente {{ nome_cliente }}"
 
     - name: Executar query SQL para criação do banco
-      mssql_query:
+      community.general.mssql_query:
         login_user: "{{ db_admin_user }}"
         login_password: "{{ db_admin_password }}"
         login_host: "{{ inventory_hostname }}"
