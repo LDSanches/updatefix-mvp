@@ -14,10 +14,10 @@
   tasks:
     - name: SQL Server Stored Procedure para criação de banco
       microsoft.sql.server_query:
-        login_user: "{{ db_admin_user }}"
-        login_password: "{{ db_admin_password }}"
-        login_host: "{{ inventory_hostname }}"
-        db: "SLAB11"
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+        login_host: "{{ db_hostname }}"
+        db: "prcontrole"
         query: >
           EXEC prcontrole.dbo.cria_banco
           '{{ requisicao }}',

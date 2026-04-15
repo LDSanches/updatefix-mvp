@@ -12,12 +12,12 @@
 
   tasks:
     - name: Check MSQL DB connection
-      microsoft.sql.server_query:
-        login_user: "{{ db_admin_user }}"
-        login_password: "{{ db_admin_password }}"
-        login_host: "{{ inventory_hostname }}"
-        db: "{{ db_name }}"
-        query: "SELECT 1"
+      community.general.mssql_script:
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+        login_host: "{{ db_hostname }}"
+        db: "prcontrole"
+        script: "SELECT 1"
       register: result
 
     - name: Validar Execução
