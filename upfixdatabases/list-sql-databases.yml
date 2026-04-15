@@ -8,7 +8,7 @@
     - vars/vars.yml
 
   tasks:
-    - name: Check MSQL DB connection
+    - name: Check MSSQL DB connection
       community.general.mssql_query:
         login_user: "{{ db_user }}"
         login_password: "{{ db_password }}"
