@@ -1,6 +1,6 @@
 ---
 - name: Executar Provisionamento de Banco via Stored Procedure
-  hosts: all
+  hosts: localhost
   gather_facts: false
   become: yes
   
