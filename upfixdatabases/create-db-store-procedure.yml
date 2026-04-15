@@ -8,22 +8,24 @@
     - vars/vars.yml
 
   tasks:
-    - name: Chamar Procedure de Criação de Banco
+    - name: Chamada da Stored Procedure para a criação do banco
+      debug:
+        msg: "Chamando Stored Procedure para criação do banco para o cliente {{ nome_cliente }}"
       mssql_query:
         login_user: "{{ db_admin_user }}"
         login_password: "{{ db_admin_password }}"
         login_host: "{{ inventory_hostname }}"
         db: "prcontrole"
         query: >
-          EXEC prcontrole.dbo.cria_banco 
-          '{{ requisicao }}', 
-          '{{ ambiente }}', 
-          '{{ nome_cliente }}', 
-          '{{ nome_sistema }}', 
+          EXEC prcontrole.dbo.cria_banco
+          '{{ requisicao }}',
+          '{{ ambiente }}',
+          '{{ nome_cliente }}',
+          '{{ nome_sistema }}',
           '{{ sufixo }}'
       register: result
 
     - name: Validar Execução
       debug:
-        msg: "A Procedure foi executada com sucesso para o cliente {{ nome_cliente }}."
+        msg: "A Stored Procedure foi executada com sucesso para o cliente {{ nome_cliente }}."
       when: result.rowcount is defined
