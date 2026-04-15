@@ -5,17 +5,15 @@
   become: yes
   collections:
     - community.general
+    - community.sql
+    - microsoft.sql
   
   vars_files:
     - vars/vars.yml
 
   tasks:
-    - name: Chamada da Stored Procedure para a criação do banco
-      debug:
-        msg: "Chamando Stored Procedure para criação do banco para o cliente {{ nome_cliente }}"
-
-    - name: Executar query SQL para criação do banco
-      community.general.mssql_query:
+    - name: SQL Server Stored Procedure para criação de banco
+      microsoft.sql.server_query:
         login_user: "{{ db_admin_user }}"
         login_password: "{{ db_admin_password }}"
         login_host: "{{ inventory_hostname }}"

@@ -1,0 +1,26 @@
+---
+- name: Lista Banco de Dados Cadastrados
+  hosts: all
+  gather_facts: false
+  become: yes
+  collections:
+    - community.general
+    - microsoft.sql
+  
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: Check MSQL DB connection
+      microsoft.sql.server_query:
+        login_user: "{{ db_admin_user }}"
+        login_password: "{{ db_admin_password }}"
+        login_host: "{{ inventory_hostname }}"
+        db: "{{ db_name }}"
+        query: "SELECT 1"
+      register: result
+
+    - name: Validar Execução
+      debug:
+        msg: "A query SQL foi executada com sucesso."
+      when: result.rowcount is defined
