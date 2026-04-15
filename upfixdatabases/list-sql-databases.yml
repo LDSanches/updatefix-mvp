@@ -3,16 +3,13 @@
   hosts: all
   gather_facts: false
   become: yes
-  collections:
-    - community.general
-    - microsoft.sql
   
   vars_files:
     - vars/vars.yml
 
   tasks:
     - name: Check MSQL DB connection
-      community.general.mssql_script:
+      community.general.mssql_query:
         login_user: "{{ db_user }}"
         login_password: "{{ db_password }}"
         login_host: "{{ db_hostname }}"

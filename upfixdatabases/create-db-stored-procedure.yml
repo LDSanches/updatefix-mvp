@@ -3,10 +3,6 @@
   hosts: all
   gather_facts: false
   become: yes
-  collections:
-    - community.general
-    - community.sql
-    - microsoft.sql
   
   vars_files:
     - vars/vars.yml
