@@ -1,20 +1,21 @@
 ---
 - name: Executar Provisionamento de Banco via Stored Procedure
-  hosts: mssql_servers
+  hosts: all
   gather_facts: false
+  become: yes
   
   vars_files:
     - vars/vars.yml
 
   tasks:
     - name: Chamar Procedure de Criação de Banco
-      community.general.mssql_query:
+      mssql_query:
         login_user: "{{ db_admin_user }}"
         login_password: "{{ db_admin_password }}"
         login_host: "{{ inventory_hostname }}"
         db: "prcontrole"
         query: >
-          EXEC prcontrole..cria_banco 
+          EXEC prcontrole.dbo.cria_banco 
           '{{ requisicao }}', 
           '{{ ambiente }}', 
           '{{ nome_cliente }}', 
