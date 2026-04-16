@@ -17,7 +17,7 @@
           '{{ nome_sistema }}',
           '{{ sufixo }}'"
       register: sql_output
-      no_log: true # Protege a senha no log do AAP
+      #no_log: true # Protege a senha no log do AAP
 
     - name: Validar a Execução
       debug:
