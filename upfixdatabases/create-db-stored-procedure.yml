@@ -1,29 +1,33 @@
 ---
-- name: Executar Provisionamento de Banco via Stored Procedure
+- name: Executar o Provisionamento de Banco via Stored Procedure
   hosts: localhost
   gather_facts: false
-  become: yes
-  
-  vars_files:
-    - vars/vars.yml
+
+  #vars_files:
+  #  - vars/vars.yml
 
   tasks:
     - name: SQL Server Stored Procedure para criação de banco
-      microsoft.sql.server_query:
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_password }}"
-        login_host: "{{ db_hostname }}"
-        db: "prcontrole"
-        query: >
-          EXEC prcontrole.dbo.cria_banco
+      ansible.builtin.command: >
+        sqlcmd -S {{ db_mssql_hostname }} -U {{ db_mssql_user }} -P '{{ db_mssql_password }}'
+        -C -Q "EXEC prcontrole.dbo.cria_banco
           '{{ requisicao }}',
           '{{ ambiente }}',
           '{{ nome_cliente }}',
           '{{ nome_sistema }}',
-          '{{ sufixo }}'
-      register: result
+          '{{ sufixo }}'"
+      register: sql_output
+      no_log: true # Protege a senha no log do AAP
 
-    - name: Validar Execução
+    - name: Validar a Execução
       debug:
         msg: "A Stored Procedure foi executada com sucesso para o cliente {{ nome_cliente }}."
-      when: result.rowcount is defined
+      when: sql_output.rc == 0
+
+    - name: Falha na Execução
+      debug:
+        msg:
+          - "Erro ao executar a Stored Procedure!"
+          - "Saída do SQL: {{ sql_output.stdout }}"
+          - "Erro do Sistema: {{ sql_output.stderr }}"
+      when: sql_output.rc != 0
