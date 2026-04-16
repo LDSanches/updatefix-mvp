@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Tentar listar bancos de dados (microsoft.sql)
+    - name: Listar bancos de dados (microsoft.sql)
       microsoft.sql.db_info:
         login_user: "{{ db_user }}"
         login_password: "{{ db_password }}"
