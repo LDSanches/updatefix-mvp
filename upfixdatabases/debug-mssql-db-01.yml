@@ -3,9 +3,9 @@
   hosts: localhost
   gather_facts: false
 
-  vars_files:
-    - vars/vars.yml
-
+  #vars_files:
+  #  - vars/vars.yml
+  
   tasks:
     - name: Valida a Conexão com o Banco de Dados
       ansible.builtin.command: >
