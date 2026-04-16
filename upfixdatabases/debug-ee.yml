@@ -11,10 +11,18 @@
       ansible.builtin.debug:
         var: collections_list.stdout_lines
 
-    - name: Verificar os caminhos de busca
+    - name: Verifica os caminhos de busca
       ansible.builtin.command: ansible-config dump | grep COLLECTIONS_PATHS
       register: config_paths
 
     - name: Mostrar os Caminhos
       ansible.builtin.debug:
         var: config_paths.stdout_lines
+
+    - name: Verificar as permissões das pastas
+      ansible.builtin.command: ls -l /usr/share/ansible/collections/ansible_collections/
+      register: permissions_check
+
+    - name: Mostrar as permissões
+      ansible.builtin.debug:
+        var: permissions_check.stdout
