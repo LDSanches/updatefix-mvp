@@ -35,7 +35,7 @@ additional_build_steps:
     # 7. Cria um link simbólico para que o comando 'sqlcmd' fique disponível no PATH global
     - RUN ln -s /opt/mssql-tools18/bin/sqlcmd /usr/bin/sqlcmd
 
-    - RUN microdnf -y update
+    #- RUN microdnf -y update
     - RUN microdnf clean all
 
 
