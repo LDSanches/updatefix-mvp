@@ -17,9 +17,9 @@
     - name: Resultado do Teste
       ansible.builtin.debug:
         msg: "Conexão estabelecida com sucesso!"
-      when: connection_test.rc == 0
+      when: sql_output.rc == 0
 
     - name: Falha na Conexão
       ansible.builtin.fail:
-        msg: "Erro ao conectar no SQL Server: {{ connection_test.stderr }}"
-      when: connection_test.rc != 0
+        msg: "Erro ao conectar no SQL Server: {{ sql_output.stderr }}"
+      when: sql_output.rc != 0
