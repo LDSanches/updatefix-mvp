@@ -2,6 +2,10 @@
 - name: Testando Visibilidade da Collection Microsoft
   hosts: localhost
   gather_facts: false
+
+  vars_files:
+    - vars/vars.yml
+  
   tasks:
     - name: Listar bancos de dados (microsoft.sql)
       microsoft.sql.db_info:

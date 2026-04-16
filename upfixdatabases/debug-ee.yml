@@ -2,6 +2,7 @@
 - name: Debug Environment
   hosts: localhost
   gather_facts: false
+  
   tasks:
     - name: Listar as Collections instaladas no EE
       ansible.builtin.command: ansible-galaxy collection list
