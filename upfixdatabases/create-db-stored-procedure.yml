@@ -3,9 +3,6 @@
   hosts: localhost
   gather_facts: false
 
-  #vars_files:
-  #  - vars/vars.yml
-
   tasks:
     - name: SQL Server Stored Procedure para criação de banco
       ansible.builtin.command: >
