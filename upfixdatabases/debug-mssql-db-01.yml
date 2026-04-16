@@ -12,7 +12,7 @@
         sqlcmd -S {{ db_host }} -U {{ db_user }} -P '{{ db_password }}'
         -t 5 -Q "SELECT 1"
       register: sql_output
-      no_log: true # Protege a senha no log do AAP
+      #no_log: true # Protege a senha no log do AAP
 
     - name: Resultado do Teste
       ansible.builtin.debug:

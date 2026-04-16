@@ -28,7 +28,16 @@ additional_build_steps:
     - RUN rpm -ivh /tmp/epel.rpm
     # 4. Remove o arquivo temporário
     - RUN rm /tmp/epel.rpm
+    # 5. Adiciona o repositório oficial da Microsoft para RHEL 9
+    - RUN curl https://packages.microsoft.com/config/rhel/9/prod.repo > /etc/yum.repos.d/mssql-release.repo
+    # 6. Instala o sqlcmd e aceita a licença (EULA) automaticamente
+    - RUN ACCEPT_EULA=Y microdnf install -y mssql-tools18 unixODBC-devel
+    # 7. Cria um link simbólico para que o comando 'sqlcmd' fique disponível no PATH global
+    - RUN ln -s /opt/mssql-tools18/bin/sqlcmd /usr/bin/sqlcmd
+
+    - RUN microdnf -y update
     - RUN microdnf clean all
+
 
 # ansible-builder build -f execution-environment.yml -t quay.io/lsanches/mssql-ee:v1 --container-runtime podman --no-cache
 # podman push quay.io/lsanches/mssql-ee:v1
