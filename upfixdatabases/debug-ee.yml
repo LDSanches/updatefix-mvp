@@ -1,0 +1,20 @@
+---
+- name: Debug Environment
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Listar as Collections instaladas no EE
+      ansible.builtin.command: ansible-galaxy collection list
+      register: collections_list
+
+    - name: Mostrar as Collections
+      ansible.builtin.debug:
+        var: collections_list.stdout_lines
+
+    - name: Verificar os caminhos de busca
+      ansible.builtin.command: ansible-config dump | grep COLLECTIONS_PATHS
+      register: config_paths
+
+    - name: Mostrar os Caminhos
+      ansible.builtin.debug:
+        var: config_paths.stdout_lines
