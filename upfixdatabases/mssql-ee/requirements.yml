@@ -1,0 +1,7 @@
+---
+collections:
+  - name: community.general
+  - name: microsoft.sql
+  - name: ansible.posix
+  - name: ansible.windows
+  - name: ansible.utils

@@ -1,0 +1,34 @@
+version: 3
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-26/ee-minimal-rhel9:latest
+
+dependencies:
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
+  galaxy: requirements.yml
+  python: requirements.txt
+  system:
+    - gcc
+    - python3-devel
+    - freetds-devel  # Necessário para compilar o pymssql no RHEL
+    - tar            # Recomendado para o builder
+    - gzip           # Recomendado para o builder
+
+additional_build_steps:
+  prepend_base:
+    # 1. Cria o link simbólico para enganar o script 'assemble' do builder
+    - RUN ln -s /usr/bin/microdnf /usr/bin/dnf
+    # 2. Baixa o RPM do EPEL manualmente
+    - RUN curl -L -o /tmp/epel.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+    # 3. Instala o RPM localmente via utilitário rpm
+    - RUN rpm -ivh /tmp/epel.rpm
+    # 4. Remove o arquivo temporário
+    - RUN rm /tmp/epel.rpm
+    - RUN microdnf clean all
+
+# ansible-builder build -f execution-environment.yml -t quay.io/lsanches/mssql-ee:v1 --container-runtime podman --no-cache
+# podman push quay.io/lsanches/mssql-ee:v1
