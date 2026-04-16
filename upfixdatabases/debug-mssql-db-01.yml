@@ -9,7 +9,7 @@
   tasks:
     - name: Valida a Conexão com o Banco de Dados
       ansible.builtin.command: >
-        sqlcmd -S {{ db_host }} -U {{ db_user }} -P '{{ db_password }}'
+        sqlcmd -S {{ db_hostname }} -U {{ db_user }} -P '{{ db_password }}'
         -t 5 -Q "SELECT 1"
       register: sql_output
       #no_log: true # Protege a senha no log do AAP

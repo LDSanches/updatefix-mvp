@@ -1,5 +1,11 @@
 ---
-# Estas variáveis virão do RHDH como extra_vars
+# Database access
+db_hostname: "{{ db_hostname }}"
+db_user: "{{ db_user }}"
+db_password: "{{ db_password }}"
+db_name: "{{ db_name }}"
+
+# Stored Procedure parameters
 requisicao: "REQ001"
 ambiente: "D"
 nome_cliente: "CLIENTE_PADRAO"
