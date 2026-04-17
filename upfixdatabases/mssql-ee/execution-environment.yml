@@ -41,3 +41,5 @@ additional_build_steps:
 
 # ansible-builder build -f execution-environment.yml -t quay.io/lsanches/mssql-ee:v1 --container-runtime podman --no-cache
 # podman push quay.io/lsanches/mssql-ee:v1
+# ansible-builder build -f execution-environment.yml -t quay.io/lsanches/mssql-ee:v2 --container-runtime podman --no-cache
+# podman push quay.io/lsanches/mssql-ee:v2
