@@ -1,7 +1,0 @@
----
-# Stored Procedure parameters
-requisicao: "REQ001"
-ambiente: "D"
-nome_cliente: "CLIENTE_PADRAO"
-nome_sistema: "SISTEMA_BASE"
-sufixo: "OPCIONAL"
